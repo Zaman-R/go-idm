@@ -12,9 +12,8 @@ import (
 )
 
 // Chunk size (in bytes)
-const chunkSize = 1024 * 1024 // 5 MB per chunk
+const chunkSize = 1024 * 1024
 
-// DownloadChunk downloads a specific chunk of a file
 func DownloadChunk(url string, start int64, end int64, filePath string, wg *sync.WaitGroup) {
 	defer wg.Done()
 
@@ -59,22 +58,22 @@ func DownloadChunk(url string, start int64, end int64, filePath string, wg *sync
 	fmt.Printf("Downloaded chunk %d-%d\n", start, end)
 }
 
-// DownloadVideo downloads a video by splitting it into chunks
-func DownloadVideo(URL string, output string, format string) {
+func DownloadVideo(videoURL string, output string, format string) {
 	if output == "" {
 		output = "video.mp4"
 	}
 
-	// Get video info (length of video file)
-	cmd := exec.Command("yt-dlp", "-f", format, "-g", URL)
+	// Use the format in the yt-dlp command
+	cmd := exec.Command("yt-dlp", "-f", "bestvideo+bestaudio", "--merge-output-format", "mp4", videoURL)
+
 	out, err := cmd.CombinedOutput()
 	if err != nil {
 		fmt.Println("Error getting video URL:", err)
 		return
 	}
 
-	// Extract direct video URL and clean it
-	videoURL := strings.TrimSpace(string(out))
+	videoURL = strings.TrimSpace(string(out))
+	fmt.Println("Downloading video from:", videoURL)
 
 	// If we encounter a warning, we want to extract only the URL part
 	if strings.Contains(videoURL, "WARNING") {
