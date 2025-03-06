@@ -1,28 +1,32 @@
 package main
 
 import (
+	"flag"
 	"fmt"
-	"github.com/Zaman-R/go-idm/cli"
 	"github.com/Zaman-R/go-idm/downloader"
-	"log"
 )
 
 func main() {
-	options := cli.ParseArgs()
-	if options == nil {
+	url := flag.String("url", "", "URL of the file/video to download")
+	output := flag.String("output", "", "Output filename")
+	downloadType := flag.String("type", "file", "Download type (file/video/audio)")
+	format := flag.String("format", "best", "Video format (e.g., best, mp4)")
+
+	flag.Parse()
+
+	if *url == "" {
+		fmt.Println("Usage: go run main.go --url <URL> --type <file/video/audio> --output <filename>")
 		return
 	}
 
-	fmt.Println("Downloading %s as %s...\n", options.URL, options.MediaType)
-
-	switch options.MediaType {
+	switch *downloadType {
 	case "file":
-		downloader.DownloadFile(options.URL, options.Output)
+		downloader.DownloadFile(*url, *output)
 	case "video":
-		//downloader.DownloadVideo(options.URL, options.Output)
-	case "audio":
-		//downloader.DownloadAudio(options.URL, options.Output)
+		downloader.DownloadVideo(*url, *output, *format)
+	case "formats":
+		downloader.GetAvailableFormats(*url)
 	default:
-		log.Println("Invalid type. Use: file, video, or audio")
+		fmt.Println("Invalid type. Use 'file', 'video', or 'formats'.")
 	}
 }
