@@ -25,7 +25,7 @@ func main() {
 	case "video":
 		downloader.DownloadVideo(*url, *output, *format)
 	case "formats":
-		downloader.GetAvailableFormats(*url)
+		//downloader.GetAvailableFormats(*url)
 	default:
 		fmt.Println("Invalid type. Use 'file', 'video', or 'formats'.")
 	}
