@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/Zaman-R/go-idm/cli"
+	"github.com/Zaman-R/go-idm/downloader"
 	"log"
 )
 
@@ -18,9 +19,9 @@ func main() {
 	case "file":
 		downloader.DownloadFile(options.URL, options.Output)
 	case "video":
-		downloader.DownloadVideo(options.URL, options.Output)
+		//downloader.DownloadVideo(options.URL, options.Output)
 	case "audio":
-		downloader.DownloadAudio(options.URL, options.Output)
+		//downloader.DownloadAudio(options.URL, options.Output)
 	default:
 		log.Println("Invalid type. Use: file, video, or audio")
 	}
